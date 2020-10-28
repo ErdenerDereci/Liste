@@ -33,13 +33,15 @@ namespace Liste
         }
         public void listele()
         {
+            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             IsyeriBilgileriNode temp = head;
 
             while (temp != null)
             {
-                Console.WriteLine(temp.isyeriAdi+" "+temp.isyeriAdresi);
+                Console.WriteLine(temp.isyeriAdi + "\n" + temp.isyeriAdresi + "\n" + temp.gorevi + "\n" + temp.suresi + "\n");
                 temp = temp.next;
             }
+            Console.WriteLine("____________________________________________________________________");
         }
         public void sil(string id)
         {
@@ -78,6 +80,44 @@ namespace Liste
             temp.gorevi = gorevi_;
             temp.suresi = suresi_;
         }
+        public int count()
+        {
+            IsyeriBilgileriNode temp = head;
+            int sayac = 0;
+            while (temp != null)
+            {
+                sayac++;
+                temp = temp.next;
+            }
+            return sayac;
+        }
+        public IsyeriBilgileriNode isyeribilgileri(int i)
+        {
+            IsyeriBilgileriNode temp = head;
+            int sayac = 0;
+            if (count() < i)
+            {
+                Console.WriteLine("Hata: index out of range!");
+                return null;
+            }
+            else
+            {
+                while (temp != null)
+                {
+                    if (sayac == i)
+                    {
+                        return temp;
+                    }
+                    sayac++;
+                    temp = temp.next;
+                }
+            }
+            return null;
 
+        }
+        public void clear()
+        {
+            head = null;
+        }
     }
 }

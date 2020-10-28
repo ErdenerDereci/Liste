@@ -11,7 +11,7 @@ namespace Liste
 {
     class TreeListe
     {
-       
+        string dosya_yolu = @"C:\ikveriTabani.txt";
         TreeNode root;
         int id = 0;
         public void ekle(string kisiAdiSoyadi_, string kisiAdresi_, string kisiTelefonu_, string kisiMail_, string kisiDogumTarihi_, string kisiYabanciDil_, string kisiEhliyet_, EgitimBilgileriListe kisiEgitimListesi_, IsyeriBilgileriListesi kisiIsyeriBilgileriListesi_)
@@ -57,7 +57,10 @@ namespace Liste
             if (node != null)
             {
                 print(node.sol);
-                Console.WriteLine(node.kisiAdiSoyadi +" "+ node.kisiAdresi + " " + node.kisiTelefonu + " " + node.kisiMail);
+                Console.WriteLine(node.kisiAdiSoyadi +"\n"+ node.kisiAdresi + "\n" + node.kisiTelefonu + "\n" + node.kisiMail+ "\n"+
+                    node.kisiDogumTarihi+ "\n"+node.kisiYabanciDil+ "\n"+ node.kisiEhliyet + "\n");
+                node.kisiEgitimListesi.listele();
+                node.kisiIsyeriBilgileriListesi.listele();
                 print(node.sag);
             }
         }
@@ -159,7 +162,7 @@ namespace Liste
                 sw.WriteLine("--------Egitim Bilgileri--------");
                 for (int i = 0; i<node.kisiEgitimListesi.count(); i++)
                 {
-                    sw.WriteLine("......");
+                    sw.WriteLine(" ");
                     sw.WriteLine("Okul Adi: "+node.kisiEgitimListesi.egitimListesi(i).okulAdi);
                     sw.WriteLine("Okul Turu: "+ node.kisiEgitimListesi.egitimListesi(i).okulturu);
                     sw.WriteLine("Bolumu: " + node.kisiEgitimListesi.egitimListesi(i).bolum);
@@ -168,9 +171,19 @@ namespace Liste
                     sw.WriteLine("Not Ortalamasi: " + node.kisiEgitimListesi.egitimListesi(i).notOrtalamasi);
                     sw.WriteLine("......");
                 }
+                sw.WriteLine("+++++++++Isyeri Bilgileri+++++++++");
+                for (int i =0; i<node.kisiIsyeriBilgileriListesi.count(); i++)
+                {
+                    sw.WriteLine(" ");
+                    sw.WriteLine("Isyeri Adi: " + node.kisiIsyeriBilgileriListesi.isyeribilgileri(i).isyeriAdi);
+                    sw.WriteLine("Isyeri Adresi: " + node.kisiIsyeriBilgileriListesi.isyeribilgileri(i).isyeriAdresi);
+                    sw.WriteLine("Gorevi: " + node.kisiIsyeriBilgileriListesi.isyeribilgileri(i).gorevi);
+                    sw.WriteLine("Calisma suresi: " + node.kisiIsyeriBilgileriListesi.isyeribilgileri(i).suresi);
+                    sw.WriteLine("......");
+                }
 
 
-
+                sw.WriteLine("_____________________________________________________________________");
 
                 Write(node.sag);
                 sw.Flush();
@@ -181,9 +194,177 @@ namespace Liste
            
         }
 
+        private void Read(TreeNode node)
+        {
+            
+            string kisiAdi = " ",adresi = " ", telefonu = " ", mail = " ", dogumtarihi = " ", yabancidil = " ", ehliyet = " ";
+            string isyeriadi = " ", isyeriAdresi = " ", gorevi = " ", calisma = " ";
+            string okuladi = " ", okulturu = " ", bolumu = " ", baslangic = " ", bitis = " ", notortalamasi = " ";
+            FileStream fs = new FileStream(dosya_yolu, FileMode.OpenOrCreate, FileAccess.Read);
+          
+            StreamReader sw = new StreamReader(fs);
+            
+            string satir = sw.ReadLine();
+            while (satir != null)
+            {
+                
+               
+                if (satir[0] == '*')
+                {
+                    
+                    
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        satir = sw.ReadLine();
+                        if (satir.Contains("Kisi Adi"))
+                        {
+                            kisiAdi = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi Adresi"))
+                        {
+                            adresi = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi Telefonu"))
+                        {
+                            telefonu = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi Mail"))
+                        {
+                            mail = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi DogumTarihi"))
+                        {
+                            dogumtarihi = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi Yabanci Dil"))
+                        {
+                            yabancidil = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Kisi Ehliyet"))
+                        {
+                            ehliyet = stringAyikla(satir);
+                        }
+                    }
+                }
+                else if (satir[0] == '-')
+                {
+                    satir = sw.ReadLine();
+                    EgitimBilgileriListe egitimliste = new EgitimBilgileriListe();
+
+                    while (true)
+                    {
+
+                        satir = sw.ReadLine();
+                        if (satir.Contains("Okul Adi"))
+                        {
+                            okuladi = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Okul Turu"))
+                        {
+                            okulturu = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Bolumu"))
+                        {
+                            bolumu = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Baslangic"))
+                        {
+                            baslangic = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Bitis"))
+                        {
+                            bitis = stringAyikla(satir);
+                        }
+                        else if (satir.Contains("Not"))
+                        {
+                            notortalamasi = stringAyikla(satir);
+                        }
+                        else if (satir[0] == '.')
+                        {
+
+                            egitimliste.ekle(okuladi, okulturu, bolumu, baslangic, bitis, notortalamasi);
+                        }
+                        else if (satir[0] == '+')
+                        {
+                            satir = sw.ReadLine();
+                            IsyeriBilgileriListesi isyeriliste = new IsyeriBilgileriListesi();
+
+                            while (true)
+                            {
+                                satir = sw.ReadLine();
+                                if (satir.Contains("Isyeri Adi"))
+                                {
+                                    isyeriadi = stringAyikla(satir);
+                                }
+                                else if (satir.Contains("Isyeri Adresi"))
+                                {
+                                    isyeriAdresi = stringAyikla(satir);
+                                }
+                                else if (satir.Contains("Gorevi"))
+                                {
+                                    gorevi = stringAyikla(satir);
+                                }
+                                else if (satir.Contains("Calisma suresi"))
+                                {
+                                    calisma = stringAyikla(satir);
+                                }
+
+                                else if (satir[0] == '.')
+                                {
+
+                                    isyeriliste.ekle(isyeriadi, isyeriAdresi, gorevi, calisma);
+                                }
+                                else if (satir[0] == '_')
+                                {
+                                    ekle(kisiAdi, adresi, telefonu, mail, dogumtarihi, yabancidil, ehliyet, egitimliste, isyeriliste);
+                                    
+                                    break;
+                                }
+
+                            }
+                            break;
+                        }
+                    }
+                   
+
+                }
+
+                satir = sw.ReadLine();
+            }
+            
+            
+            sw.Close();
+            fs.Close();
+        }
+        public void okut()
+        {
+            Read(root);
+        }
+        
         public void yazdir()
         {
             Write(root);
+        }
+        private string stringAyikla(string deger)
+        {
+            string donecek = "";
+            int i;
+            for (i = 0; i < deger.Length; i++)
+            {
+                if (deger[i] == ':')
+                {
+                    break;
+                }
+            }
+            i++;
+            i++;
+            for (int j=i; j < deger.Length; j++)
+            {
+                donecek = donecek + deger[j];
+            }
+            return donecek;
+
         }
     }
 

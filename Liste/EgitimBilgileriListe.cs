@@ -39,10 +39,11 @@ namespace Liste
         public void listele()
         {
             EgitimBilgileriNode temp = head;
-
+            Console.WriteLine("-----------------------------------------");
             while (temp != null)
             {
-                Console.WriteLine(temp.okulAdi + " " + temp.okulturu);
+                
+                Console.WriteLine(temp.okulAdi + "\n" + temp.okulturu + "\n" +temp.bolum + "\n" +temp.baslangicTarihi + "\n" +temp.bitisTarihi + "\n" +temp.notOrtalamasi + "\n");
                 temp = temp.next;
             }
         }
